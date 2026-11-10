@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://toolsathi-b4pq.onrender.com/sitemap.xml
