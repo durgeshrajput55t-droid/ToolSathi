@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="/">← Back</a>
+<h2 id="title">Tool</h2>
+<div id="password-tool" style="display:none; background:#fff; padding:30px; border-radius:12px;">
+<p><b>Ek click me Strong Password banao!</b></p>
+<label>Kitne akshar ka password chahiye? </label>
+<input id="len" type="number" value="12" style="padding:8px; width:70px;">
+<br><br>
+<input id="out" readonly style="width:100%; padding:12px; font-size:20px; font-weight:bold;" placeholder="Yaha password aayega">
+<br><br>
+<button onclick="generate()" style="padding:12px 25px; background:#111; color:white; border:none; border-radius:8px; cursor:pointer;">Generate Password 🔑</button>
+<button onclick="copyPass()" style="padding:12px 20px; background:green; color:white; border:none; border-radius:8px; cursor:pointer;">Copy</button>
+</div>
+<div id="age-tool" style="display:none; background:#fff; padding:30px; border-radius:12px;">
+<p><b>Apni Date of Birth daalo, umar pata chal jayegi!</b></p>
+<label>Apni Date of Birth: </label>
+<input id="dob" type="date" style="padding:10px; font-size:16px;">
+<br><br>
+<button onclick="calcAge()" style="padding:12px 25px; background:#111; color:white; border:none; border-radius:8px; cursor:pointer;">Umar Nikalo 🎂</button>
+<br><br>
+<h3 id="age-result" style="color:green;"></h3>
+<p id="age-detail"></p>
+</div>
+<div id="word-tool" style="display:none; background:#fff; padding:30px; border-radius:12px;">
+<p><b>Yaha kuch bhi likho, ye gin lega!</b></p>
+<textarea id="mytext" oninput="countWords()" rows="6" style="width:100%; padding:12px; font-size:16px;" placeholder="Yaha likho..."></textarea>
+<br><br>
+<h3 id="word-result">Words: 0 | Akshar: 0</h3>
+<p id="word-detail"></p>
+</div>
+<script>
+function generate(){
+let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!%&*";
+let l = document.getElementById('len').value;
+let pass = "";
+for(let i=0; i<l; i++){ pass += chars[Math.floor(Math.random()*chars.length)]; }
+document.getElementById('out').value = pass;
+}
+function copyPass(){
+let o = document.getElementById('out');
+o.select(); document.execCommand('copy');
+alert('Copy ho gaya!');
+}
+function calcAge(){
+let dobVal = document.getElementById('dob').value;
+if(!dobVal){ alert('Pehle Date of Birth daalo!'); return; }
+let birth = new Date(dobVal);
+let today = new Date();
+let age = today.getFullYear() - birth.getFullYear();
+let m = today.getMonth() - birth.getMonth();
+if(m < 0 || (m===0 && today.getDate() < birth.getDate())){ age--; }
+let totalDays = Math.floor((today - birth) / (1000*60*60*24));
+document.getElementById('age-result').innerText = "Tumhari Umar: " + age + " Saal 🎉";
+document.getElementById('age-detail').innerText = "Tum is duniya me " + totalDays + " din se ho!";
+}
+function countWords(){
+let t = document.getElementById('mytext').value;
+let words = t.trim() === "" ? 0 : t.trim().split(/\s+/).length;
+document.getElementById('word-result').innerText = "Words: " + words + " | Akshar: " + t.length;
+document.getElementById('word-detail').innerText = "Tumne " + words + " shabd likhe hai!";
+}
+let url = window.location.pathname.toLowerCase();
+if(url.includes('password')){
+document.getElementById('password-tool').style.display='block';
+document.getElementById('title').innerText='Password Generator';
+generate();
+} else if(url.includes('age')){
+document.getElementById('age-tool').style.display='block';
+document.getElementById('title').innerText='Age Calculator';
+} else if(url.includes('word') || url.includes('counter')){
+document.getElementById('word-tool').style.display='block';
+document.getElementById('title').innerText='Word Counter';
+} else {
+document.getElementById('password-tool').style.display='block';
+generate();
+}
+</script>
+{% endblock %}

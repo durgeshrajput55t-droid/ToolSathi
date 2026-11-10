@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>All Tools (100)</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px">
+{% for tool in tools %}
+<a href="/tool/{{tool.slug}}/" style="background:#fff;padding:20px;text-align:center;text-decoration:none;color:#000;border-radius:10px;box-shadow:0 2px 5px #ddd">
+<div style="font-size:30px">{{tool.icon}}</div>
+<div>{{tool.name}}</div>
+</a>
+{% endfor %}
+</div>
+{% endblock %}
