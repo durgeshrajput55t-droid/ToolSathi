@@ -1,12 +1,313 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>All Tools (100)</h2>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px">
-{% for tool in tools %}
-<a href="/tool/{{tool.slug}}/" style="background:#fff;padding:20px;text-align:center;text-decoration:none;color:#000;border-radius:10px;box-shadow:0 2px 5px #ddd">
-<div style="font-size:30px">{{tool.icon}}</div>
-<div>{{tool.name}}</div>
-</a>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolSathi - Free Online Tools</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f6f8ff;color:#222}
+header{background:#4f46e5;color:white;padding:20px;text-align:center}
+header h1{font-size:28px}
+header p{opacity:.9;margin-top:5px}
+.container{max-width:1000px;margin:20px auto;padding:0 15px}
+h2{margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);text-align:center}
+.card h3{margin-bottom:8px}
+.card p{font-size:14px;color:#555;margin-bottom:12px}
+button{background:#4f46e5;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;width:100%}
+input{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+.result{margin-top:10px;font-weight:bold;color:#4f46e5}
+.tool{background:white;padding:20px;border-radius:12px;margin-top:20px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+footer{text-align:center;padding:20px;color:#777;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>🛠️ ToolSathi</h1>
+<p>Free, Fast & Easy Online Tools - Sab Kuch Ek Jagah</p>
+</header>
+
+<div class="container">
+<h2>All Tools (4)</h2>
+<div class="grid">
+<div class="card"><h3>🎂 Age Calculator</h3><p>Apni age seconds me nikalo</p><button onclick="show('age')">Use Tool</button></div>
+<div class="card"><h3>⚖️ BMI Calculator</h3><p>Weight sahi hai ya nahi check karo</p><button onclick="show('bmi')">Use Tool</button></div>
+<div class="card"><h3>✍️ Word Counter</h3><p>Words aur characters gino</p><button onclick="show('word')">Use Tool</button></div>
+<div class="card"><h3>🔐 Password Generator</h3><p>Strong password banao</p><button onclick="show('pass')">Use Tool</button></div>
 </div>
-{% endblock %}
+
+<div id="age" class="tool">
+<h3>🎂 Age Calculator</h3>
+<input type="date" id="dob">
+<button onclick="calcAge()">Calculate Age</button>
+<div class="result" id="ageRes"></div>
+</div>
+
+<div id="bmi" class="tool" style="display:none">
+<h3>⚖️ BMI Calculator</h3>
+<input type="number" id="height" placeholder="Height in cm - jaise 170">
+<input type="number" id="weight" placeholder="Weight in kg - jaise 65">
+<button onclick="calcBMI()">Check BMI</button>
+<div class="result" id="bmiRes"></div>
+</div>
+
+<div id="word" class="tool" style="display:none">
+<h3>✍️ Word Counter</h3>
+<input id="textInput" placeholder="Yahan likho..." oninput="countWords()">
+<div class="result" id="wordRes">Words: 0 | Characters: 0</div>
+</div>
+
+<div id="pass" class="tool" style="display:none">
+<h3>🔐 Password Generator</h3>
+<button onclick="genPass()">Generate Password</button>
+<div class="result" id="passRes"></div>
+</div>
+</div>
+
+<footer>Made with ❤️ by ToolSathi | © 2026 ToolSathi</footer>
+
+<script>
+function show(id){
+document.querySelectorAll('.tool').forEach(t=>t.style.display='none');
+document.getElementById(id).style.display='block';
+window.scrollTo({top:400,behavior:'smooth'});
+}
+function calcAge(){
+let dob=new Date(document.getElementById('dob').value);
+if(!dob.getTime()){document.getElementById('ageRes').innerText='Date select karo!';return;}
+let now=new Date();let age=now.getFullYear()-dob.getFullYear();
+let m=now.getMonth()-dob.getMonth();
+if(m<0||(m===0&&now.getDate()<dob.getDate())) age--;
+document.getElementById('ageRes').innerText='Tumhari Age: '+age+' saal';
+}
+function calcBMI(){
+let h=parseFloat(document.getElementById('height').value)/100;
+let w=parseFloat(document.getElementById('weight').value);
+if(!h||!w){document.getElementById('bmiRes').innerText='Height aur Weight dalo!';return;}
+let bmi=(w/(h*h)).toFixed(1);
+let cat=bmi<18.5?'Underweight':bmi<25?'Perfect! Fit ho':bmi<30?'Overweight':'Obese';
+document.getElementById('bmiRes').innerText='Tumhara BMI: '+bmi+' - '+cat;
+}
+function countWords(){
+let t=document.getElementById('textInput').value;
+let w=t.trim()?t.trim().split(/\s+/).length:0;
+document.getElementById('wordRes').innerText='Words: '+w+' | Characters: '+t.length;
+}
+function genPass(){
+let chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%';
+let p='';for(let i=0;i<12;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+document.getElementById('passRes').innerText=p;
+}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolSathi - Free Online Tools</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f6f8ff;color:#222}
+header{background:#4f46e5;color:white;padding:20px;text-align:center}
+header h1{font-size:28px}
+header p{opacity:.9;margin-top:5px}
+.container{max-width:1000px;margin:20px auto;padding:0 15px}
+h2{margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);text-align:center}
+.card h3{margin-bottom:8px}
+.card p{font-size:14px;color:#555;margin-bottom:12px}
+button{background:#4f46e5;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;width:100%}
+input{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+.result{margin-top:10px;font-weight:bold;color:#4f46e5}
+.tool{background:white;padding:20px;border-radius:12px;margin-top:20px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+footer{text-align:center;padding:20px;color:#777;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>🛠️ ToolSathi</h1>
+<p>Free, Fast & Easy Online Tools - Sab Kuch Ek Jagah</p>
+</header>
+
+<div class="container">
+<h2>All Tools (4)</h2>
+<div class="grid">
+<div class="card"><h3>🎂 Age Calculator</h3><p>Apni age seconds me nikalo</p><button onclick="show('age')">Use Tool</button></div>
+<div class="card"><h3>⚖️ BMI Calculator</h3><p>Weight sahi hai ya nahi check karo</p><button onclick="show('bmi')">Use Tool</button></div>
+<div class="card"><h3>✍️ Word Counter</h3><p>Words aur characters gino</p><button onclick="show('word')">Use Tool</button></div>
+<div class="card"><h3>🔐 Password Generator</h3><p>Strong password banao</p><button onclick="show('pass')">Use Tool</button></div>
+</div>
+
+<div id="age" class="tool">
+<h3>🎂 Age Calculator</h3>
+<input type="date" id="dob">
+<button onclick="calcAge()">Calculate Age</button>
+<div class="result" id="ageRes"></div>
+</div>
+
+<div id="bmi" class="tool" style="display:none">
+<h3>⚖️ BMI Calculator</h3>
+<input type="number" id="height" placeholder="Height in cm - jaise 170">
+<input type="number" id="weight" placeholder="Weight in kg - jaise 65">
+<button onclick="calcBMI()">Check BMI</button>
+<div class="result" id="bmiRes"></div>
+</div>
+
+<div id="word" class="tool" style="display:none">
+<h3>✍️ Word Counter</h3>
+<input id="textInput" placeholder="Yahan likho..." oninput="countWords()">
+<div class="result" id="wordRes">Words: 0 | Characters: 0</div>
+</div>
+
+<div id="pass" class="tool" style="display:none">
+<h3>🔐 Password Generator</h3>
+<button onclick="genPass()">Generate Password</button>
+<div class="result" id="passRes"></div>
+</div>
+</div>
+
+<footer>Made with ❤️ by ToolSathi | © 2026 ToolSathi</footer>
+
+<script>
+function show(id){
+document.querySelectorAll('.tool').forEach(t=>t.style.display='none');
+document.getElementById(id).style.display='block';
+window.scrollTo({top:400,behavior:'smooth'});
+}
+function calcAge(){
+let dob=new Date(document.getElementById('dob').value);
+if(!dob.getTime()){document.getElementById('ageRes').innerText='Date select karo!';return;}
+let now=new Date();let age=now.getFullYear()-dob.getFullYear();
+let m=now.getMonth()-dob.getMonth();
+if(m<0||(m===0&&now.getDate()<dob.getDate())) age--;
+document.getElementById('ageRes').innerText='Tumhari Age: '+age+' saal';
+}
+function calcBMI(){
+let h=parseFloat(document.getElementById('height').value)/100;
+let w=parseFloat(document.getElementById('weight').value);
+if(!h||!w){document.getElementById('bmiRes').innerText='Height aur Weight dalo!';return;}
+let bmi=(w/(h*h)).toFixed(1);
+let cat=bmi<18.5?'Underweight':bmi<25?'Perfect! Fit ho':bmi<30?'Overweight':'Obese';
+document.getElementById('bmiRes').innerText='Tumhara BMI: '+bmi+' - '+cat;
+}
+function countWords(){
+let t=document.getElementById('textInput').value;
+let w=t.trim()?t.trim().split(/\s+/).length:0;
+document.getElementById('wordRes').innerText='Words: '+w+' | Characters: '+t.length;
+}
+function genPass(){
+let chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%';
+let p='';for(let i=0;i<12;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+document.getElementById('passRes').innerText=p;
+}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolSathi - Free Online Tools</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f6f8ff;color:#222}
+header{background:#4f46e5;color:white;padding:20px;text-align:center}
+header h1{font-size:28px}
+header p{opacity:.9;margin-top:5px}
+.container{max-width:1000px;margin:20px auto;padding:0 15px}
+h2{margin:15px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);text-align:center}
+.card h3{margin-bottom:8px}
+.card p{font-size:14px;color:#555;margin-bottom:12px}
+button{background:#4f46e5;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;width:100%}
+input{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+.result{margin-top:10px;font-weight:bold;color:#4f46e5}
+.tool{background:white;padding:20px;border-radius:12px;margin-top:20px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+footer{text-align:center;padding:20px;color:#777;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<h1>🛠️ ToolSathi</h1>
+<p>Free, Fast & Easy Online Tools - Sab Kuch Ek Jagah</p>
+</header>
+
+<div class="container">
+<h2>All Tools (4)</h2>
+<div class="grid">
+<div class="card"><h3>🎂 Age Calculator</h3><p>Apni age seconds me nikalo</p><button onclick="show('age')">Use Tool</button></div>
+<div class="card"><h3>⚖️ BMI Calculator</h3><p>Weight sahi hai ya nahi check karo</p><button onclick="show('bmi')">Use Tool</button></div>
+<div class="card"><h3>✍️ Word Counter</h3><p>Words aur characters gino</p><button onclick="show('word')">Use Tool</button></div>
+<div class="card"><h3>🔐 Password Generator</h3><p>Strong password banao</p><button onclick="show('pass')">Use Tool</button></div>
+</div>
+
+<div id="age" class="tool">
+<h3>🎂 Age Calculator</h3>
+<input type="date" id="dob">
+<button onclick="calcAge()">Calculate Age</button>
+<div class="result" id="ageRes"></div>
+</div>
+
+<div id="bmi" class="tool" style="display:none">
+<h3>⚖️ BMI Calculator</h3>
+<input type="number" id="height" placeholder="Height in cm - jaise 170">
+<input type="number" id="weight" placeholder="Weight in kg - jaise 65">
+<button onclick="calcBMI()">Check BMI</button>
+<div class="result" id="bmiRes"></div>
+</div>
+
+<div id="word" class="tool" style="display:none">
+<h3>✍️ Word Counter</h3>
+<input id="textInput" placeholder="Yahan likho..." oninput="countWords()">
+<div class="result" id="wordRes">Words: 0 | Characters: 0</div>
+</div>
+
+<div id="pass" class="tool" style="display:none">
+<h3>🔐 Password Generator</h3>
+<button onclick="genPass()">Generate Password</button>
+<div class="result" id="passRes"></div>
+</div>
+</div>
+
+<footer>Made with ❤️ by ToolSathi | © 2026 ToolSathi</footer>
+
+<script>
+function show(id){
+document.querySelectorAll('.tool').forEach(t=>t.style.display='none');
+document.getElementById(id).style.display='block';
+window.scrollTo({top:400,behavior:'smooth'});
+}
+function calcAge(){
+let dob=new Date(document.getElementById('dob').value);
+if(!dob.getTime()){document.getElementById('ageRes').innerText='Date select karo!';return;}
+let now=new Date();let age=now.getFullYear()-dob.getFullYear();
+let m=now.getMonth()-dob.getMonth();
+if(m<0||(m===0&&now.getDate()<dob.getDate())) age--;
+document.getElementById('ageRes').innerText='Tumhari Age: '+age+' saal';
+}
+function calcBMI(){
+let h=parseFloat(document.getElementById('height').value)/100;
+let w=parseFloat(document.getElementById('weight').value);
+if(!h||!w){document.getElementById('bmiRes').innerText='Height aur Weight dalo!';return;}
+let bmi=(w/(h*h)).toFixed(1);
+let cat=bmi<18.5?'Underweight':bmi<25?'Perfect! Fit ho':bmi<30?'Overweight':'Obese';
+document.getElementById('bmiRes').innerText='Tumhara BMI: '+bmi+' - '+cat;
+}
+function countWords(){
+let t=document.getElementById('textInput').value;
+let w=t.trim()?t.trim().split(/\s+/).length:0;
+document.getElementById('wordRes').innerText='Words: '+w+' | Characters: '+t.length;
+}
+function genPass(){
+let chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%';
+let p='';for(let i=0;i<12;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+document.getElementById('passRes').innerText=p;
+}
+</script>
+</body>
+</html>
